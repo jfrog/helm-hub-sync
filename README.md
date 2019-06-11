@@ -16,6 +16,8 @@ That's a really good question to begin with! Helm Hub used to be a proper reposi
 
 To run the app, you'll need to set a few command line variables
 
+* **LOGLEVEL**: The log level to use (possible values are `panic`, `fatal`, `error`, `warn`, `info`, and `debug`)
+* **CONSOLELOG**: Boolean value to create human-friendly, colorized output (set to `true` for console logging)
 * **ARTIFACTORY_HOST**: The hostname of JFrog Artifactory to connect to (like `http://jfrog.local/artifactory`)
 * **ARTIFACTORY_REPO**: The Helm Virtual Repository to use (like `helm`)
 * **ARTIFACTORY_AUTHTYPE**: The authentication type to use (either `basic` or `apikey`)
