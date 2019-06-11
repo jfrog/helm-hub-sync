@@ -16,6 +16,7 @@ That's a really good question to begin with! Helm Hub used to be a proper reposi
 
 To run the app, you'll need to set a few command line variables
 
+* **TIMEINTERVAL**: The time in seconds between two successive runs (if not set, or set to `-1`, only one run will be done)
 * **LOGLEVEL**: The log level to use (possible values are `panic`, `fatal`, `error`, `warn`, `info`, and `debug`)
 * **CONSOLELOG**: Boolean value to create human-friendly, colorized output (set to `true` for console logging)
 * **ARTIFACTORY_HOST**: The hostname of JFrog Artifactory to connect to (like `http://jfrog.local/artifactory`)
