@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -24,6 +25,7 @@ var (
 	userPass            = os.Getenv("ARTIFACTORY_AUTH")
 	authHeaderName      = ""
 	authHeaderValue     = ""
+	timeInterval        = os.Getenv("TIMEINTERVAL")
 )
 
 func main() {
@@ -43,6 +45,8 @@ func main() {
 	}
 
 	log.Info().Msgf("Running artisync-hub version [%s-%s]", version, buildTime)
+
+	log.Debug().Msg("Validating environment variables")
 
 	if len(jfrogHost) == 0 {
 		log.Panic().Msg("No Artifactory host set. Set environment variable ARTIFACTORY_HOST to continue...")
@@ -65,57 +69,88 @@ func main() {
 
 	log.Debug().Msgf("Using %s authentication", strings.ToLower(authType))
 
-	artiRepos, err := artifactory.GetRepositories(jfrogHost, authHeaderName, authHeaderValue)
+	sleep, err := strconv.Atoi(timeInterval)
 	if err != nil {
-		log.Panic().Msgf("Error getting repositories from Artifactory: %s", err.Error())
+		sleep = -1
+		log.Debug().Msg("No time interval set, performing only one run")
 	}
 
-	helmRepo, err := artifactory.GetRepository(jfrogHost, authHeaderName, authHeaderValue, helmVirtualRepo)
-	if err != nil {
-		log.Panic().Msgf("Error getting Helm virtual repository from Artifactory: %s", err.Error())
-	}
+	log.Debug().Msg("All configuration checked")
 
-	githubRepos, err := github.GetHelmChartRepos()
-	if err != nil {
-		log.Panic().Msgf("Error getting Helm Chart data from GitHub: %s", err.Error())
-	}
+	log.Info().Msg("Started successfully and waiting for runs (use CTRL+c to stop)...")
 
-	artiRepoMap := artifactory.RepositoryHashmap(artiRepos)
-	githubRepoMap := github.RepositoryHashmap(githubRepos)
+	for {
+		log.Debug().Msg("Starting run")
 
-	for _, repo := range sync.NotInGitHub(githubRepoMap, artiRepos) {
-		log.Info().Msgf("Helm Chart repository [%s] no longer present in GitHub data", repo.Key)
-		err := artifactory.DeleteRepository(jfrogHost, authHeaderName, authHeaderValue, repo.Key)
+		log.Debug().Msg("Get data from Artifactory")
+
+		artiRepos, err := artifactory.GetRepositories(jfrogHost, authHeaderName, authHeaderValue)
 		if err != nil {
-			log.Error().Msgf("Error removing %s from Artifactory: %s", repo.Key, err.Error())
+			log.Panic().Msgf("Error getting repositories from Artifactory: %s", err.Error())
 		}
-		helmRepo.Repositories = sync.RemoveFromSlice(helmRepo.Repositories, repo.Key)
-		modifiedVirtualRepo = true
-	}
 
-	for _, repo := range sync.NotInArtifactory(artiRepoMap, githubRepos) {
-		log.Info().Msgf("Adding Helm Chart repository [%s] to Artifactory", repo.Name)
-		err := artifactory.CreateRepository(jfrogHost, authHeaderName, authHeaderValue, repo.Name, repo.URL)
+		helmRepo, err := artifactory.GetRepository(jfrogHost, authHeaderName, authHeaderValue, helmVirtualRepo)
 		if err != nil {
-			log.Error().Msgf("Error adding %s to Artifactory: %s", repo.Name, err.Error())
+			log.Panic().Msgf("Error getting Helm virtual repository from Artifactory: %s", err.Error())
 		}
-		helmRepo.Repositories = append(helmRepo.Repositories, repo.Name)
-		modifiedVirtualRepo = true
-	}
 
-	if modifiedVirtualRepo {
-		log.Info().Msgf("Made changes to Artifactory, updating virtual repository %s", helmVirtualRepo)
-		newRepoContent := artifactory.Repository{
-			Key:          helmVirtualRepo,
-			PackageType:  "helm",
-			Repositories: helmRepo.Repositories,
-			Rclass:       helmRepo.Rclass,
-		}
-		err := artifactory.UpdateRepository(jfrogHost, authHeaderName, authHeaderValue, helmVirtualRepo, newRepoContent)
+		log.Debug().Msg("Get data from GitHub")
+
+		githubRepos, err := github.GetHelmChartRepos()
 		if err != nil {
-			log.Error().Msgf("Error updating %s: %s", helmVirtualRepo, err.Error())
+			log.Panic().Msgf("Error getting Helm Chart data from GitHub: %s", err.Error())
 		}
-	} else {
-		log.Info().Msg("Artifactory and Helm Hub are in sync...")
+
+		artiRepoMap := artifactory.RepositoryHashmap(artiRepos)
+		githubRepoMap := github.RepositoryHashmap(githubRepos)
+
+		log.Debug().Msg("Checking which charts are no longer in GitHub")
+
+		for _, repo := range sync.NotInGitHub(githubRepoMap, artiRepos) {
+			log.Info().Msgf("Helm Chart repository [%s] no longer present in GitHub data", repo.Key)
+			err := artifactory.DeleteRepository(jfrogHost, authHeaderName, authHeaderValue, repo.Key)
+			if err != nil {
+				log.Error().Msgf("Error removing %s from Artifactory: %s", repo.Key, err.Error())
+			}
+			helmRepo.Repositories = sync.RemoveFromSlice(helmRepo.Repositories, repo.Key)
+			modifiedVirtualRepo = true
+		}
+
+		log.Debug().Msg("Checking which chart repos are not in Artifactory")
+
+		for _, repo := range sync.NotInArtifactory(artiRepoMap, githubRepos) {
+			log.Info().Msgf("Adding Helm Chart repository [%s] to Artifactory", repo.Name)
+			err := artifactory.CreateRepository(jfrogHost, authHeaderName, authHeaderValue, repo.Name, repo.URL)
+			if err != nil {
+				log.Error().Msgf("Error adding %s to Artifactory: %s", repo.Name, err.Error())
+			}
+			helmRepo.Repositories = append(helmRepo.Repositories, repo.Name)
+			modifiedVirtualRepo = true
+		}
+
+		if modifiedVirtualRepo {
+			log.Info().Msgf("Made changes to Artifactory, updating virtual repository %s", helmVirtualRepo)
+			newRepoContent := artifactory.Repository{
+				Key:          helmVirtualRepo,
+				PackageType:  "helm",
+				Repositories: helmRepo.Repositories,
+				Rclass:       helmRepo.Rclass,
+			}
+			err := artifactory.UpdateRepository(jfrogHost, authHeaderName, authHeaderValue, helmVirtualRepo, newRepoContent)
+			if err != nil {
+				log.Error().Msgf("Error updating %s: %s", helmVirtualRepo, err.Error())
+			}
+		} else {
+			log.Info().Msg("Artifactory and Helm Hub are in sync...")
+		}
+
+		log.Debug().Msg("Completed run")
+
+		if sleep == -1 {
+			os.Exit(0)
+		} else {
+			log.Debug().Msgf("Sleeping for %d seconds", sleep)
+			time.Sleep(time.Duration(sleep) * time.Second)
+		}
 	}
 }
