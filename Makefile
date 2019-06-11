@@ -7,10 +7,10 @@
 # MIT license. See the LICENSE file for details.
 # -----------------------------------------------------------------------------
 
-docker_image  := gh
+docker_image  := artisync-hub
 build_dir     := $(CURDIR)/bin
 dist_dir      := $(CURDIR)/dist
-github_repo   := retgits/gh
+github_repo   := retgits/artisync-hub
 version       := $(shell git describe --tags --always --dirty="-dev")
 date          := $(shell date -u '+%Y-%m-%d-%H:%M UTC')
 version_flags := -ldflags='-X "main.version=$(version)" -X "main.buildTime=$(date)"'
