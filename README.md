@@ -8,6 +8,10 @@
 
 A command line tool to synchronize [Helm Hub](https://github.com/helm/hub) repositories with [JFrog Artifactory](https://jfrog.com/artifactory/)
 
+## Why do I need this
+
+That's a really good question to begin with! Helm Hub used to be a proper repository that contained all charts themselves and in essence was a central registry for Helm charts. While the new UI is super awesome, you might still want to have a single central location where you can find the Helm charts for your organization. `artisync-hub` helps you maintain a virtual repository in Artifactory that can be that single source of truth, using the configuration from Helm Hub.
+
 ## Environment variables
 
 To run the app, you'll need to set a few command line variables
