@@ -10,3 +10,4 @@ RUN apk add --no-cache curl wget git alpine-sdk \
 FROM alpine:3.9
 COPY --from=builder /root/app/artisync-hub /bin
 RUN apk add --no-cache curl wget git ca-certificates
+CMD ["artisync-hub"]
