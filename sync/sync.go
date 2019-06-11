@@ -1,6 +1,9 @@
 package sync
 
 import (
+	"crypto/md5"
+	"encoding/hex"
+
 	"github.com/retgits/artisync-hub/artifactory"
 	"github.com/retgits/artisync-hub/github"
 )
@@ -36,4 +39,11 @@ func RemoveFromSlice(slice []string, item string) []string {
 	}
 
 	return slice
+}
+
+// GetMD5Hash generates an MD5 hash of a string
+func GetMD5Hash(text string) string {
+	hasher := md5.New()
+	hasher.Write([]byte(text))
+	return hex.EncodeToString(hasher.Sum(nil))
 }
