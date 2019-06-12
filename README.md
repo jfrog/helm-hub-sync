@@ -20,9 +20,11 @@ To run the app, you'll need to set a few command line variables
 * **LOGLEVEL**: The log level to use (possible values are `panic`, `fatal`, `error`, `warn`, `info`, and `debug`)
 * **CONSOLELOG**: Boolean value to create human-friendly, colorized output (set to `true` for console logging)
 * **ARTIFACTORY_HOST**: The hostname of JFrog Artifactory to connect to (like `http://jfrog.local/artifactory`)
-* **ARTIFACTORY_REPO**: The Helm Virtual Repository to use (like `helm`)
-* **ARTIFACTORY_AUTHTYPE**: The authentication type to use (either `basic` or `apikey`)
-* **ARTIFACTORY_AUTH**: The authentication data to use (see below for details)
+* **ARTIFACTORY_HELM_REPO**: The Helm Virtual Repository to use (like `helm`)
+* **ARTIFACTORY_AUTH_TYPE**: The authentication type to use (either `basic` or `apikey`)
+* **ARTIFACTORY_AUTH_DATA**: The authentication data to use (see below for details)
+* **ARTIFACTORY_KEEP_LIST**: A comma separated list containing Helm Remote repos that will never be removed (like `myAwesomeRepo, stable`)
+* **GITHUB_IGNORE_LIST**: A comma separated list containing Helm repos that should never be created (like `stable, another-repo`)
 
 ## Authentication
 

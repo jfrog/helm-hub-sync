@@ -3,6 +3,7 @@ module github.com/retgits/artisync-hub
 go 1.12
 
 require (
+	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/rs/zerolog v1.14.3
 	github.com/stretchr/testify v1.3.0
 	golang.org/x/crypto v0.0.0-20190611184440-5c40567a22f8 // indirect
