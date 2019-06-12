@@ -24,6 +24,7 @@ To run the app, you'll need to set a few command line variables
 * **ARTIFACTORY_AUTH_TYPE**: The authentication type to use (either `basic` or `apikey`)
 * **ARTIFACTORY_AUTH_DATA**: The authentication data to use (see below for details)
 * **ARTIFACTORY_KEEP_LIST**: A comma separated list containing Helm Remote repos that will never be removed (like `myAwesomeRepo, stable`)
+* **ARTIFACTORY_KEEP_DELETED_REPOS**: Boolean value whether to keep repos that have been removed from the GitHub data (defaults to `false`)
 * **GITHUB_IGNORE_LIST**: A comma separated list containing Helm repos that should never be created (like `stable, another-repo`)
 
 ## Authentication

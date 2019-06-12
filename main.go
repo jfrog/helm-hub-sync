@@ -26,15 +26,16 @@ var (
 
 // Config keeps the configuration of the app
 type Config struct {
-	LogLevel            string `required:"true"`
-	ConsoleLog          bool
-	ArtifactoryHost     string   `required:"true" split_words:"true"`
-	ArtifactoryHelmRepo string   `required:"true" split_words:"true"`
-	ArtifactoryAuthType string   `required:"true" split_words:"true"`
-	ArtifactoryAuthData string   `required:"true" split_words:"true"`
-	ArtifactoryKeepList []string `split_words:"true"`
-	GithubIgnoreList    []string `split_words:"true"`
-	TimeInterval        int
+	LogLevel                    string `required:"true"`
+	ConsoleLog                  bool
+	ArtifactoryHost             string   `required:"true" split_words:"true"`
+	ArtifactoryHelmRepo         string   `required:"true" split_words:"true"`
+	ArtifactoryAuthType         string   `required:"true" split_words:"true"`
+	ArtifactoryAuthData         string   `required:"true" split_words:"true"`
+	ArtifactoryKeepDeletedRepos bool     `split_words:"true"`
+	ArtifactoryKeepList         []string `split_words:"true"`
+	GithubIgnoreList            []string `split_words:"true"`
+	TimeInterval                int
 }
 
 func main() {
@@ -114,7 +115,7 @@ func main() {
 
 			for _, repo := range sync.NotInGitHub(githubRepoMap, artiRepos) {
 				log.Info().Msgf("Helm Chart repository [%s] no longer present in GitHub data", repo.Key)
-				if !sync.Contains(repo.Key, config.ArtifactoryKeepList) {
+				if !sync.Contains(repo.Key, config.ArtifactoryKeepList) || !config.ArtifactoryKeepDeletedRepos {
 					err := artifactory.DeleteRepository(config.ArtifactoryHost, authHeaderName, authHeaderValue, repo.Key)
 					if err != nil {
 						log.Error().Msgf("Error removing %s from Artifactory: %s", repo.Key, err.Error())
@@ -122,7 +123,7 @@ func main() {
 					helmRepo.Repositories = sync.RemoveFromSlice(helmRepo.Repositories, repo.Key)
 					modifiedVirtualRepo = true
 				} else {
-					log.Debug().Msgf("Helm Chart repository [%s] is in Artifactory Keep List, repo will not be removed", repo.Key)
+					log.Debug().Msgf("Helm Chart repository [%s] is in Artifactory Keep List or Keep Deleted Repos is set to true, repo will not be removed", repo.Key)
 				}
 			}
 
