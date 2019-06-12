@@ -1,4 +1,4 @@
-module github.com/retgits/artisync-hub
+module github.com/jfrog/helm-hub-sync
 
 go 1.12
 

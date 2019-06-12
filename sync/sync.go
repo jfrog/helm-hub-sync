@@ -4,8 +4,8 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 
-	"github.com/retgits/artisync-hub/artifactory"
-	"github.com/retgits/artisync-hub/github"
+	"github.com/jfrog/helm-hub-sync/artifactory"
+	"github.com/jfrog/helm-hub-sync/github"
 )
 
 // NotInGitHub checks which JFrog Artifactory repositories do not exist in GitHub (anymore), which means they

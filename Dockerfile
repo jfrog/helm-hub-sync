@@ -8,6 +8,6 @@ RUN apk add --no-cache curl wget git alpine-sdk \
     && CGO_ENABLED=0 go build
 
 FROM alpine:3.9
-COPY --from=builder /root/app/artisync-hub /bin
+COPY --from=builder /root/app/helm-hub-sync /bin
 RUN apk add --no-cache curl wget git ca-certificates
-CMD ["artisync-hub"]
+CMD ["helm-hub-sync"]

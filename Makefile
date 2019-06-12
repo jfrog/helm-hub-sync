@@ -1,16 +1,16 @@
 # -----------------------------------------------------------------------------
 # Description: Makefile
 # Author(s): retgits
-# Last updated: 2019-04-28
+# Last updated: 2019-06-11
 # 
 # This software may be modified and distributed under the terms of the
 # MIT license. See the LICENSE file for details.
 # -----------------------------------------------------------------------------
 
-docker_image  := artisync-hub
+docker_image  := helm-hub-sync
 build_dir     := $(CURDIR)/bin
 dist_dir      := $(CURDIR)/dist
-github_repo   := retgits/artisync-hub
+github_repo   := jfrog/helm-hub-sync
 version       := $(shell git describe --tags --always --dirty="-dev")
 date          := $(shell date -u '+%Y-%m-%d-%H:%M UTC')
 version_flags := -ldflags='-X "main.version=$(version)" -X "main.buildTime=$(date)"'

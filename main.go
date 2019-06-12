@@ -7,10 +7,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/jfrog/helm-hub-sync/artifactory"
+	"github.com/jfrog/helm-hub-sync/github"
+	"github.com/jfrog/helm-hub-sync/sync"
 	"github.com/kelseyhightower/envconfig"
-	"github.com/retgits/artisync-hub/artifactory"
-	"github.com/retgits/artisync-hub/github"
-	"github.com/retgits/artisync-hub/sync"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 )
@@ -56,7 +56,7 @@ func main() {
 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stderr})
 	}
 
-	log.Info().Msgf("Running artisync-hub version [%s-%s]", version, buildTime)
+	log.Info().Msgf("Running helm-hub-sync version [%s-%s]", version, buildTime)
 
 	log.Debug().Msg("Validating environment variables")
 

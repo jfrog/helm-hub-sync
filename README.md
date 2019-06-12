@@ -1,8 +1,8 @@
-# artisync-hub
+# helm-hub-sync
 
-[![Go Report Card](https://goreportcard.com/badge/github.com/retgits/artisync-hub?style=flat-square)](https://goreportcard.com/report/github.com/retgits/artisync-hub)
-[![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](http://godoc.org/github.com/retgits/artisync-hub)
-[![Release](https://img.shields.io/github/release/retgits/artisync-hub.svg?style=flat-square)](https://github.com/retgits/artisync-hub/releases/latest)
+[![Go Report Card](https://goreportcard.com/badge/github.com/jfrog/helm-hub-sync?style=flat-square)](https://goreportcard.com/report/github.com/jfrog/helm-hub-sync)
+[![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](http://godoc.org/github.com/jfrog/helm-hub-sync)
+[![Release](https://img.shields.io/github/release/jfrog/helm-hub-sync.svg?style=flat-square)](https://github.com/jfrog/helm-hub-sync/releases/latest)
 
 ![logo](./logo.png)
 
@@ -10,7 +10,7 @@ A command line tool to synchronize [Helm Hub](https://github.com/helm/hub) repos
 
 ## Why do I need this
 
-That's a really good question to begin with! Helm Hub used to be a proper repository that contained all charts themselves and in essence was a central registry for Helm charts. While the new UI is super awesome, you might still want to have a single central location where you can find the Helm charts for your organization. `artisync-hub` helps you maintain a virtual repository in Artifactory that can be that single source of truth, using the configuration from Helm Hub.
+That's a really good question to begin with! Helm Hub used to be a proper repository that contained all charts themselves and in essence was a central registry for Helm charts. While the new UI is super awesome, you might still want to have a single central location where you can find the Helm charts for your organization. `helm-hub-sync` helps you maintain a virtual repository in Artifactory that can be that single source of truth, using the configuration from Helm Hub.
 
 ## Environment variables
 
@@ -28,7 +28,7 @@ To run the app, you'll need to set a few command line variables
 
 ## Authentication
 
-**artisync-hub** uses JFrog Artifactory's REST API to update the Helm repositories. The JFrog Artifactory REST API supports a few forms of authentication:
+**helm-hub-sync** uses JFrog Artifactory's REST API to update the Helm repositories. The JFrog Artifactory REST API supports a few forms of authentication:
 
 * Basic authentication using your username and password
   * Set `ARTIFACTORY_AUTHTYPE` to `basic` and `ARTIFACTORY_AUTH` to `<username>:<password>`

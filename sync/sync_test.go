@@ -3,8 +3,8 @@ package sync
 import (
 	"testing"
 
-	"github.com/retgits/artisync-hub/artifactory"
-	"github.com/retgits/artisync-hub/github"
+	"github.com/jfrog/helm-hub-sync/artifactory"
+	"github.com/jfrog/helm-hub-sync/github"
 	"github.com/stretchr/testify/assert"
 )
 
