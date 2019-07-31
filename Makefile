@@ -1,12 +1,3 @@
-# -----------------------------------------------------------------------------
-# Description: Makefile
-# Author(s): retgits
-# Last updated: 2019-06-11
-# 
-# This software may be modified and distributed under the terms of the
-# MIT license. See the LICENSE file for details.
-# -----------------------------------------------------------------------------
-
 docker_image  := helm-hub-sync
 build_dir     := $(CURDIR)/bin
 dist_dir      := $(CURDIR)/dist
