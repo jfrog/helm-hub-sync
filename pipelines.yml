@@ -1,0 +1,39 @@
+resources:
+  - name: helm_hub_sync_master
+    type: GitRepo
+    configuration:
+      gitProvider: jfrogsolutionci_github
+      path: jfrog/helm-hub-sync
+
+pipelines:
+  - name: helmHubSyncMaster
+    steps:
+      - name: run
+        type: Bash
+        configuration:
+          environmentVariables:
+            DESIRED_VERSION: v2.14.3
+          inputResources:
+            - name: helm_hub_sync_master
+          integrations:
+            - name: cpe_ci_kube
+            - name: cpe_pipeline_slack
+        execution:
+          onStart:
+            - send_notification cpe_pipeline_slack --text "Starting helmHubSyncMaster run step" 
+          onExecute:
+            - cd $res_helm_hub_sync_master_resourcePath
+            - ls
+            - pwd
+            - gcloud version
+            - gcloud container clusters get-credentials cpe-ci-1 --zone us-west1-a --project soldev-ci
+            - kubectl get node
+            - curl -LO https://git.io/get_helm.sh
+            - chmod 700 get_helm.sh
+            - ./get_helm.sh
+            - helm init --client-only
+            - helm repo add jfrog https://charts.jfrog.io/
+            - helm repo update
+            - helm plugin install https://github.com/rimusz/helm-tiller
+            - helm tiller run -- helm ls
+            - send_notification cpe_pipeline_slack --text "helmHubSyncMaster run execution finished!"
