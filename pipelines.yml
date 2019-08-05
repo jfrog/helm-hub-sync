@@ -37,3 +37,7 @@ pipelines:
             - helm plugin install https://github.com/rimusz/helm-tiller
             - helm tiller run -- helm ls
             - send_notification cpe_pipeline_slack --text "helmHubSyncMaster run execution finished!"
+          onSuccess:
+            - send_notification cpe_pipeline_slack --text "helmHubSyncMaster STATUS- SUCCESS"
+          onFailure:
+            - send_notification cpe_pipeline_slack --text "helmHubSyncMaster Status- FAILED"
