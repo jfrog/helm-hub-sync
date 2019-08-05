@@ -16,7 +16,7 @@ GOPROXY=https://gocenter.io
 PWD ?= pwd_unknown
 
 # List all PHONY targets
-.PHONY: help build build-docker build-dist install tags list clean clean-build clean-dist deps score setup test
+.PHONY: help build build-docker build-dist install tags list clean clean-build clean-dist deps score setup test image
 
 # Help
 help: ## Displays the help for each target (this message).
@@ -30,6 +30,8 @@ build: ## builds the executable
 	@echo "Building..."
 	$Q rm -f $(build_dir)
 	$Q go build $(if $V,-v) $(version_flags)
+
+image: build-docker
 
 build-docker: ## builds a docker container
 	@echo "Building..."

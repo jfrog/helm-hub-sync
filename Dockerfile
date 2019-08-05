@@ -1,13 +1,17 @@
-FROM golang:alpine as builder
+FROM golang:1.12-alpine AS builder
 
 ADD . /root/app
 
-RUN apk add --no-cache curl wget git alpine-sdk \
-    && cd /root/app \
-    && go get ./... \
-    && CGO_ENABLED=0 go build
+RUN apk add --no-cache git
 
-FROM alpine:3.9
+# Download modules
+RUN cd /root/app && \
+    GO111MODULE=on GOPROXY=https://gocenter.io go mod download
+
+# Build microservices
+RUN cd /root/app && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
+
+FROM gcr.io/distroless/static
 COPY --from=builder /root/app/helm-hub-sync /bin
-RUN apk add --no-cache curl wget git ca-certificates
 CMD ["helm-hub-sync"]
