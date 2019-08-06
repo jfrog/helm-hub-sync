@@ -20,7 +20,7 @@ pipelines:
             - name: cpe_pipeline_slack
         execution:
           onStart:
-            - send_notification cpe_pipeline_slack --text "Starting helmHubSyncMaster Run" 
+            - send_notification cpe_pipeline_slack --text "Starting ${step_name}_buildNumber=${run_number}" 
           onExecute:
             - cd $res_helm_hub_sync_master_resourcePath
             - ls
@@ -37,6 +37,6 @@ pipelines:
             - helm plugin install https://github.com/rimusz/helm-tiller
             - helm tiller run -- helm ls
           onSuccess:
-            - send_notification cpe_pipeline_slack --text "helmHubSyncMaster Status- SUCCESS"
+            - send_notification cpe_pipeline_slack --text "${step_name}_buildNumber=${run_number} Status- SUCCESS"
           onFailure:
-            - send_notification cpe_pipeline_slack --text "helmHubSyncMaster Status- FAILED"
+            - send_notification cpe_pipeline_slack --text "${step_name}_buildNumber=${run_number} Status- FAILED"
