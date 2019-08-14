@@ -18,3 +18,5 @@ vendor/
 # Binary and Build dirs
 bin/
 dist/
+
+tmp/

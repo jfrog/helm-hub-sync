@@ -22,18 +22,6 @@ pipelines:
           dockerImageTag: $run_number
           inputResources:
             - name: helm_hub_sync_master
-          integrations:
-            - name: cpe_ci_1_artifactory
-
-      - name: push_image
-        type: DockerPush
-        configuration:
-          affinityGroup: buildGroup
-          targetRepository: docker
-          integrations:
-            - name: cpe_ci_1_artifactory
-          inputSteps:
-            - name: build_image
 
       - name: run_test
         type: Bash
