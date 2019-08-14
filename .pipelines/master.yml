@@ -4,6 +4,8 @@ resources:
     configuration:
       gitProvider: jfrogsolutionci_github
       path: jfrog/helm-hub-sync
+      branches: 
+        include: master
 
 pipelines:
   - name: helmHubSyncMaster
@@ -13,6 +15,9 @@ pipelines:
         configuration:
           environmentVariables:
             DESIRED_VERSION: v2.14.3
+            CLUSTER: ${int_cpe_ci_cluster_cluster//_/-}
+            ZONE: ${int_cpe_ci_cluster_zone//_/-}
+            PROJECT: ${int_cpe_ci_cluster_project//_/-}
           inputResources:
             - name: helm_hub_sync_master
           integrations:
@@ -27,7 +32,7 @@ pipelines:
             - ls
             - pwd
             - gcloud version
-            - gcloud container clusters get-credentials ${int_cpe_ci_cluster_cluster//_/-} --zone ${int_cpe_ci_cluster_zone//_/-} --project ${int_cpe_ci_cluster_project//_/-}
+            - gcloud container clusters get-credentials ${CLUSTER} --zone ${ZONE} --project ${PROJECT}
             - kubectl get node
             - curl -LO https://git.io/get_helm.sh
             - chmod 700 get_helm.sh
