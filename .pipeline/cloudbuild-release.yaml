@@ -25,8 +25,8 @@ steps:
   - --ciphertext-file=/workspace/bintray.creds.enc
   - --plaintext-file=/workspace/bintray.creds
   - --location=global
-  - --keyring=helm-hub-sync-ci
-  - --key=helm-hub-sync-ci
+  - --keyring=kubexray-ci
+  - --key=kubexray-ci
   id: 'decrypt_bin_creds'
 
 # Push to bintray
