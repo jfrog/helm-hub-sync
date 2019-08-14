@@ -10,6 +10,30 @@ resources:
 pipelines:
   - name: helmHubSyncMaster
     steps:
+      - name: build_image
+        type: DockerBuild
+        configuration:
+          affinityGroup: buildGroup
+          environmentVariables:
+            ARTIFACTORY: ${int_cpe_ci_1_artifactory_url}
+          dockerFileLocation: .
+          dockerFileName: Dockerfile
+          dockerImageName: ${ARTIFACTORY}/docker/helm-hub-sync
+          dockerImageTag: $run_number
+          inputResources:
+            - name: helm_hub_sync_master
+          integrations:
+            - name: cpe_ci_1_artifactory
+
+      - name: push_image
+        type: DockerPush
+        configuration:
+          affinityGroup: buildGroup
+          targetRepository: docker
+          integrations:
+            - name: cpe_ci_1_artifactory
+          inputSteps:
+            - name: build_image
 
       - name: run_test
         type: Bash
