@@ -69,7 +69,7 @@ func main() {
 		authHeaderName = "X-JFrog-Art-Api"
 		authHeaderValue = config.ArtifactoryAuthData
 	default:
-		log.Panic().Msg("No authentication method set. Set environment variable ARTIFACTORY_AUTHTYPE to continue...")
+		log.Panic().Msg("No authentication method set. Set environment variable ARTIFACTORY_AUTH_TYPE to continue...")
 	}
 
 	log.Debug().Msgf("Using %s authentication", strings.ToLower(config.ArtifactoryAuthType))
