@@ -22,7 +22,7 @@ This chart will do the following:
 - A running Kubernetes cluster
 - A running Artifactory
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/) installed and setup to use the cluster
-- [Helm](https://helm.sh/) installed and setup to use the cluster (helm init) or or [Tillerless Helm](https://github.com/rimusz/helm-tiller)
+- [Helm](https://helm.sh/) installed and setup to use the cluster (helm init) or [Tillerless Helm](https://github.com/rimusz/helm-tiller)
 
 ### TODO: add install examples
 
