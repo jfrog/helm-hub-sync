@@ -15,12 +15,4 @@ RUN cd /root/app && \
 FROM gcr.io/distroless/static
 COPY --from=builder /root/app/helm-hub-sync /bin
 
-# Create user
-ARG uid=1000
-ARG gid=1000
-RUN addgroup -g $gid helmhubsync && \
-    adduser -D -u $uid -G helmhubsync helmhubsync
-
-USER helmhubsync
-
 CMD ["helm-hub-sync"]
