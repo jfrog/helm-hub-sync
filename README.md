@@ -10,7 +10,8 @@ A command line tool to synchronize [Helm Hub](https://github.com/helm/hub) repos
 
 ## Why do I need this
 
-That's a really good question to begin with! Helm Hub used to be a proper repository that contained all charts themselves and in essence was a central registry for Helm charts. While the new UI is super awesome, you might still want to have a single central location where you can find the Helm charts for your organization. `helm-hub-sync` helps you maintain a virtual repository in Artifactory that can be that single source of truth, using the configuration from Helm Hub.
+That's a really good question to begin with! [Helm Hub](https://hub.helm.sh) with the new UI is super awesome, but it only can be used as distributed public repository to search for charts in UI.
+You might still want to have a single central location where you can find the Helm charts for your organization. `helm-hub-sync` helps you maintain a virtual repository in Artifactory that can be that single source of truth, using the configuration from Helm Hub.
 
 ## Environment variables
 
@@ -32,10 +33,54 @@ To run the app, you'll need to set a few command line variables
 **helm-hub-sync** uses JFrog Artifactory's REST API to update the Helm repositories. The JFrog Artifactory REST API supports a few forms of authentication:
 
 * Basic authentication using your username and password
-  * Set `ARTIFACTORY_AUTHTYPE` to `basic` and `ARTIFACTORY_AUTH` to `<username>:<password>`
+  * Set `ARTIFACTORY_AUTH_TYPE` to `basic` and `ARTIFACTORY_AUTH_DATA` to `<username>:<password>`
 * Basic authentication using your username and API Key.
-  * Set `ARTIFACTORY_AUTHTYPE` to `basic` and `ARTIFACTORY_AUTH` to `<username>:<apikey>`
+  * Set `ARTIFACTORY_AUTH_TYPE` to `basic` and `ARTIFACTORY_AUTH_DATA` to `<username>:<apikey>`
 * Using an access token instead of a password for basic authentication.
-  * Set `ARTIFACTORY_AUTHTYPE` to `basic` and `ARTIFACTORY_AUTH` to `<username>:<token>`
+  * Set `ARTIFACTORY_AUTH_TYPE` to `basic` and `ARTIFACTORY_AUTH_DATA` to `<username>:<token>`
 * Using a dedicated header (X-JFrog-Art-Api) with your API Key.
-  * Set `ARTIFACTORY_AUTHTYPE` to `apikey` and `ARTIFACTORY_AUTH` to `your api key>`
+  * Set `ARTIFACTORY_AUTH_TYPE` to `apikey` and `ARTIFACTORY_AUTH_DATA` to `your api key>`
+
+
+## Install Instructions
+
+The easiest way to install KubeXray is using the Helm [chart](https://github.com/jfrog/charts/tree/master/stable/helm-hub-sync)
+
+Please follow install instruction from chart's [readme](https://github.com/jfrog/charts/blob/master/stable/helm-hub-sync/README.md)
+
+For non Kubernetes environments export the necessary environment variables and run it:
+
+```console
+./helm-hub-sync
+```
+
+## Local development and testing
+
+### Building binary
+
+To build `kubexray` locally 
+
+  ```console
+  make build
+  ```
+
+### Docker
+
+To build `kubexray` docker image locally (testing docker image build)
+
+  ```console
+  make image
+  ```
+
+## Contributing Code
+
+We welcome community contribution through pull requests.
+
+<a name="License"/>
+
+## License
+
+This tool is available under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+
+
+(c) All rights reserved JFrog
