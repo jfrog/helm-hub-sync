@@ -44,21 +44,21 @@ To run the app, you'll need to set a few command line variables
 
 ## Install Instructions
 
-The easiest way to install KubeXray is using the Helm [chart](https://github.com/jfrog/charts/tree/master/stable/helm-hub-sync)
+The easiest way to install Helm-hub-sync is using the Helm [chart](https://github.com/jfrog/charts/tree/master/stable/helm-hub-sync)
 
 Please follow install instruction from chart's [readme](https://github.com/jfrog/charts/blob/master/stable/helm-hub-sync/README.md)
 
-For non Kubernetes environments export the necessary environment variables and run it:
+For non Kubernetes environments export the necessary environment variables and run it
 
-```console
-./helm-hub-sync
-```
+ ```console
+ ./helm-hub-sync
+ ```
 
 ## Local development and testing
 
 ### Building binary
 
-To build `kubexray` locally 
+To build `helm-hub-sync` locally 
 
   ```console
   make build
@@ -66,7 +66,7 @@ To build `kubexray` locally
 
 ### Docker
 
-To build `kubexray` docker image locally (testing docker image build)
+To build `helm-hub-sync` docker image locally (testing docker image build)
 
   ```console
   make image
