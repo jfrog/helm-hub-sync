@@ -31,11 +31,11 @@ pipelines:
             - name: cpe_pipeline_slack
         execution:
           onStart:
-            - send_notification cpe_pipeline_slack --text "Starting helmHubSyncPr ${step_name}_buildNumber=${run_number}" 
+            - send_notification cpe_pipeline_slack --text "Starting helmHubSyncRelease v$res_helm_hub_sync_release_gitTagName ${step_name}_buildNumber=${run_number}" 
           onSuccess:
-            - send_notification cpe_pipeline_slack --text "helmHubSyncPr ${step_name}_buildNumber=${run_number} - SUCCESS"
+            - send_notification cpe_pipeline_slack --text "helmHubSyncRelease v$res_helm_hub_sync_release_gitTagName ${step_name}_buildNumber=${run_number} - SUCCESS"
           onFailure:
-            - send_notification cpe_pipeline_slack --text "helmHubSyncPr ${step_name}_buildNumber=${run_number} - FAILED"
+            - send_notification cpe_pipeline_slack --text "helmHubSyncRelease v$res_helm_hub_sync_release_gitTagName ${step_name}_buildNumber=${run_number} - FAILED"
       - name: push_image
         type: Bash
         configuration:
@@ -59,9 +59,9 @@ pipelines:
             - docker tag helm-hub-sync:${TAG_NAME} ${BINTRAY_REPO}/helm-hub-sync:${TAG_NAME}
             - docker push ${BINTRAY_REPO}/helm-hub-sync:${TAG_NAME}
           onSuccess:
-            - send_notification cpe_pipeline_slack --text "helmHubSyncRelease of docker image ${step_name}_buildNumber=${run_number} - SUCCESS"
+            - send_notification cpe_pipeline_slack --text "helmHubSyncRelease of docker image v${TAG_NAME} ${step_name}_buildNumber=${run_number} - SUCCESS"
           onFailure:
-            - send_notification cpe_pipeline_slack --text "helmHubSyncRelease of docker image ${step_name}_buildNumber=${run_number} - FAILED"
+            - send_notification cpe_pipeline_slack --text "helmHubSyncRelease of docker image v${TAG_NAME} ${step_name}_buildNumber=${run_number} - FAILED"
       - name: goreleaser
         type: Bash
         configuration:
@@ -85,7 +85,7 @@ pipelines:
             - name: build_image
         execution:
           onStart:
-            - send_notification cpe_pipeline_slack --text "Starting helmHubSyncRelease goreleaser ${TAG_NAME} ${step_name}_buildNumber=${run_number}" 
+            - send_notification cpe_pipeline_slack --text "Starting helmHubSyncRelease goreleaser v${TAG_NAME} ${step_name}_buildNumber=${run_number}" 
           onExecute:
             - cd $res_helm_hub_sync_release_resourcePath
             - ls
@@ -93,6 +93,6 @@ pipelines:
             - curl -sL https://raw.githubusercontent.com/goreleaser/get/master/get | VERSION=v0.115.0 bash
             - echo "goreleaser finished!!!"
           onSuccess:
-            - send_notification cpe_pipeline_slack --text "helmHubSyncRelease goreleaser ${TAG_NAME} ${step_name}_buildNumber=${run_number} - SUCCESS"
+            - send_notification cpe_pipeline_slack --text "helmHubSyncRelease goreleaser v${TAG_NAME} ${step_name}_buildNumber=${run_number} - SUCCESS"
           onFailure:
-            - send_notification cpe_pipeline_slack --text "helmHubSyncRelease goreleaser ${TAG_NAME} ${step_name}_buildNumber=${run_number} - FAILED"
+            - send_notification cpe_pipeline_slack --text "helmHubSyncRelease goreleaser v${TAG_NAME} ${step_name}_buildNumber=${run_number} - FAILED"
