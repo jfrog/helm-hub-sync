@@ -4,7 +4,7 @@
 [![Go Doc](https://img.shields.io/badge/godoc-reference-blue.svg?style=flat-square)](http://godoc.org/github.com/jfrog/helm-hub-sync)
 [![Release](https://img.shields.io/github/release/jfrog/helm-hub-sync.svg?style=flat-square)](https://github.com/jfrog/helm-hub-sync/releases/latest)
 
-![logo](./logo.png)
+![logo](./images/logo.png)
 
 A command line tool to synchronize [Helm Hub](https://github.com/helm/hub) repositories with [JFrog Artifactory](https://jfrog.com/artifactory/)
 
@@ -12,6 +12,8 @@ A command line tool to synchronize [Helm Hub](https://github.com/helm/hub) repos
 
 That's a really good question to begin with! [Helm Hub](https://hub.helm.sh) with the new UI is super awesome, but it only can be used as distributed public repository to search for charts in UI.
 You might still want to have a single central location where you can find the Helm charts for your organization. `helm-hub-sync` helps you maintain a virtual repository in Artifactory that can be that single source of truth, using the configuration from Helm Hub.
+
+![architecture](./images/helm-hub-sync.png)
 
 ## Environment variables
 
