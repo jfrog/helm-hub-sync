@@ -63,7 +63,6 @@ pipelines:
           onFailure:
             - send_notification cpe_pipeline_slack --text "helmHubSyncRelease of docker image ${step_name}_buildNumber=${run_number} - FAILED"
       - name: goreleaser
-        type: Bash
         configuration:
           runtime:
             type: image
