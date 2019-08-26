@@ -3,7 +3,7 @@ resources:
   - name: helm_hub_sync_any_branch
     type: GitRepo
     configuration:
-      gitProvider: rimas_github
+      gitProvider: jfrogsolutionsci_github
       path: jfrog/helm-hub-sync
       files:
         exclude: .pipelines/.*.yml$
