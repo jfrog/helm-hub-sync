@@ -45,6 +45,7 @@ pipelines:
             BINTRAY_REPO: ${int_jfrogsolutionsci_bintray_repo//_/-}.bintray.io
           inputResources:
             - name: helm_hub_sync_release
+              trigger: false
           integrations:
             - name: jfrogsolutionsci_bintray
             - name: cpe_pipeline_slack
