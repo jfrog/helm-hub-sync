@@ -1,0 +1,33 @@
+    
+resources:
+  - name: helm_hub_sync_any_branch
+    type: GitRepo
+    configuration:
+      gitProvider: rimas_github
+      path: jfrog/helm-hub-sync
+      files:
+        exclude: .pipelines/.*.yml$
+      branches:
+        exclude: master
+
+pipelines:
+  - name: helmHubSyncAnybranch
+    steps:
+      - name: build_image
+        type: DockerBuild
+        configuration:
+          dockerFileLocation: .
+          dockerFileName: Dockerfile
+          dockerImageName: helm-hub-sync
+          dockerImageTag: $run_number
+          inputResources:
+            - name: helm_hub_sync_any_branch
+          integrations:
+            - name: cpe_pipeline_slack
+        execution:
+          onStart:
+            - send_notification cpe_pipeline_slack --text "Starting helmHubSyncAnybranch ${step_name}_buildNumber=${run_number}" 
+          onSuccess:
+            - send_notification cpe_pipeline_slack --text "helmHubSyncAnybranch ${step_name}_buildNumber=${run_number} - SUCCESS"
+          onFailure:
+            - send_notification cpe_pipeline_slack --text "helmHubSyncAnybranch ${step_name}_buildNumber=${run_number} - FAILED"
