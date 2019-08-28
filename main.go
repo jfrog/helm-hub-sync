@@ -80,6 +80,11 @@ func main() {
 
 	log.Debug().Msg("All configuration checked")
 
+	err = artifactory.SendUsage(config.ArtifactoryHost, authHeaderName, authHeaderValue, version)
+	if err != nil {
+		log.Debug().Msgf("Error sending usage data to Artifactory: %s", err.Error())
+	}
+
 	log.Info().Msg("Started successfully and waiting for runs (use CTRL+c to stop)...")
 
 	for {
