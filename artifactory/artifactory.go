@@ -286,11 +286,14 @@ func SendUsage(baseUrl string, authHeaderName string, authHeaderValue string, ve
 	url := fmt.Sprintf("%s%s", baseUrl, usageUrl)
 	buf := bytes.Buffer{}
 	enc := json.NewEncoder(&buf)
-	enc.Encode(map[string]string{
+	err := enc.Encode(map[string]string{
 		"productId": fmt.Sprintf("JFrogHelmHubSync/%s", version),
 	})
+	if err != nil {
+		return err
+	}
 	payload := buf.Bytes()
-	_, err := callArtifactory(url, authHeaderName, authHeaderValue, http.MethodPost, payload)
+	_, err = callArtifactory(url, authHeaderName, authHeaderValue, http.MethodPost, payload)
 	return err
 }
 
