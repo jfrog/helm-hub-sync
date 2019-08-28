@@ -286,8 +286,9 @@ func SendUsage(baseUrl string, authHeaderName string, authHeaderValue string, ve
 	url := fmt.Sprintf("%s%s", baseUrl, usageUrl)
 	buf := bytes.Buffer{}
 	enc := json.NewEncoder(&buf)
-	err := enc.Encode(map[string]string{
+	err := enc.Encode(map[string]interface{}{
 		"productId": fmt.Sprintf("JFrogHelmHubSync/%s", version),
+		"features": []string{},
 	})
 	if err != nil {
 		return err
