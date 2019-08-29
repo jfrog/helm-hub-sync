@@ -11,6 +11,7 @@ import (
 const (
 	allRemoteRepositoriesURL = "/api/repositories?type=remote&packageType=helm"
 	repoConfigURL            = "/api/repositories/%s"
+	usageUrl                 = "/api/system/usage"
 )
 
 // Repository is a collection of metadata surrounding the artifact storage in JFrog Artifactory
@@ -279,6 +280,22 @@ func DeleteRepository(baseURL string, authHeaderName string, authHeaderValue str
 	}
 
 	return nil
+}
+
+func SendUsage(baseUrl string, authHeaderName string, authHeaderValue string, version string) error {
+	url := fmt.Sprintf("%s%s", baseUrl, usageUrl)
+	buf := bytes.Buffer{}
+	enc := json.NewEncoder(&buf)
+	err := enc.Encode(map[string]interface{}{
+		"productId": fmt.Sprintf("JFrogHelmHubSync/%s", version),
+		"features": []string{},
+	})
+	if err != nil {
+		return err
+	}
+	payload := buf.Bytes()
+	_, err = callArtifactory(url, authHeaderName, authHeaderValue, http.MethodPost, payload)
+	return err
 }
 
 func callArtifactory(url string, authHeaderName string, authHeaderValue string, httpMethod string, payload []byte) ([]byte, error) {
